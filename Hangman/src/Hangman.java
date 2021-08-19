@@ -40,12 +40,12 @@ public class Hangman {
             }};
             String[] bodyParts = {"O", "|", "|", "/", "\\"};
 
+            System.out.println("\nH A N G M A N");
+
             boolean gameRunning = true;
-
             while (gameRunning) {
-                System.out.println("\nH A N G M A N");
 
-                System.out.println("+---+");
+                System.out.println("\n+---+");
                 System.out.printf("%s   |\n", body.get(0));
                 System.out.printf("%s   |\n", body.get(1));
                 System.out.printf("%s   |\n", body.get(2));
