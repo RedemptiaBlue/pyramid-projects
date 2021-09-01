@@ -163,7 +163,7 @@ public class Battleship {
             runTurn(attacker, defender);
             winner = checkWinFor(attacker);
             if (winner) {
-                System.out.printf("%s has won!", attacker.getName());
+                System.out.printf("%s has won!\n", attacker.getName());
             }
             if (attacker.equals(player1)) {
                 attacker = player2;
