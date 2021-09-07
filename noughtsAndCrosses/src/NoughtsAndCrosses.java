@@ -19,16 +19,20 @@ public class NoughtsAndCrosses {
     static void chooseXOrO() {
         boolean playerNotSet = true;
         while (playerNotSet) {
-            String input = sc.nextLine();
-            if (input.equals("x") || input.equals("X")) {
-                player = "X";
-                computer = "O";
-                playerNotSet = false;
-            } else if (input.equals("o") || input.equals("O")) {
-                player = "O";
-                computer = "X";
-                playerNotSet = false;
-            } else {
+            try {
+                String input = sc.nextLine();
+                if (input.equals("x") || input.equals("X")) {
+                    player = "X";
+                    computer = "O";
+                    playerNotSet = false;
+                } else if (input.equals("o") || input.equals("O")) {
+                    player = "O";
+                    computer = "X";
+                    playerNotSet = false;
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
                 System.out.println("Invalid input");
                 System.out.println("Do you want to be X or O?");
             }
@@ -52,9 +56,8 @@ public class NoughtsAndCrosses {
         boolean turnNotTaken = true;
         while (turnNotTaken) {
             System.out.println("What is your next move? (1-9)");
-            String input = sc.nextLine();
             try {
-                int i = Integer.parseInt(input);
+                int i = Integer.parseInt(sc.nextLine());
                 if (tiles.get(i - 1).equals(" ")) {
                     tiles.set(i - 1, player);
                     playerTiles.add(i);
@@ -63,7 +66,7 @@ public class NoughtsAndCrosses {
                     System.out.println("That spot is already taken.");
                 }
 
-            } catch (Exception NumberFormatException) {
+            } catch (Exception e) {
                 System.out.println("Please pick a number 1-9");
             }
         }

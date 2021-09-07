@@ -90,14 +90,28 @@ public class Hangman {
     }
 
     public static boolean playAgainPrompt() {
-        String yesNo = sc.nextLine();
+        System.out.println("You did it! Play again?");
+        boolean valid = false;
+        String yesNo = null;
+        while (!valid){
+            try {
+                yesNo = sc.nextLine();
+                if (!yesNo.equals("yes") && !yesNo.equals("no")) {
+                    throw new Exception();
+                }
+                valid = true;
+            } catch (Exception e) {
+                System.out.println("Invalid input");
+            }
+        }
         return yesNo.equals("no");
     }
 
     public static void checkInput(String input) {
-        if (input.length() != 1) {
-            System.out.println("Invalid input Try again");
-        } else {
+        try {
+            if (input.length() != 1) {
+                throw new Exception();
+            }
             boolean inMissedLetters = false;
             for (var l : missedLetters) {
                 if (input.equals(l)) {
@@ -122,6 +136,8 @@ public class Hangman {
                     addBodyPartToGallow();
                 }
             }
+        } catch (Exception e) {
+            System.out.println("Invalid Input Please Try again.");
         }
     }
 
@@ -145,7 +161,6 @@ public class Hangman {
                 }
                 if (wordFound()) {
                     gameRunning = false;
-                    System.out.println("You did it! Play again?");
                     exit = playAgainPrompt();
                     continue;
                 }

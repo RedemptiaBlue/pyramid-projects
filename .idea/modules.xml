@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Battleship/Battleship.iml" filepath="$PROJECT_DIR$/Battleship/Battleship.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DragonCave/DragonCave.iml" filepath="$PROJECT_DIR$/DragonCave/DragonCave.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Hangman/Hangman.iml" filepath="$PROJECT_DIR$/Hangman/Hangman.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NumberGame/NumberGame.iml" filepath="$PROJECT_DIR$/NumberGame/NumberGame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/noughtsAndCrosses/noughtsAndCrosses.iml" filepath="$PROJECT_DIR$/noughtsAndCrosses/noughtsAndCrosses.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pyramid-academy-projects.iml" filepath="$PROJECT_DIR$/.idea/pyramid-academy-projects.iml" />
+    </modules>
+  </component>
+</project>
