@@ -18,12 +18,17 @@ public class DragonCave {
         while (badOrNoInput) {
             System.out.println("Which cave will you go into? (1 or 2)");
             Thread.sleep(1000);
-            input = sc.nextLine();
-            if (!input.equals("1") && !input.equals("2")) {
-                System.out.println("You only have two choices. Really. Try again.");
-                Thread.sleep(1500);
-            } else {
+            try {
+                input = sc.nextLine();
+                if (!input.equals("1") && !input.equals("2")) {
+                    System.out.println("You only have two choices. Really.");
+                    Thread.sleep(1500);
+                    throw new Exception();
+                }
                 badOrNoInput = false;
+            } catch (Exception e) {
+                System.out.println("Try again.");
+                Thread.sleep(1500);
             }
         }
 

@@ -28,10 +28,14 @@ public class Battleship {
     static Coordinates selectCoord(){
         Pattern tuple = Pattern.compile("\\(([1-9]+),([1-9]+)\\)");
         Coordinates parsed = null;
-        Matcher matcher = tuple.matcher(sc.nextLine());
-        if (matcher.find()) {
-            parsed = new Coordinates(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
-        } else {
+        try {
+            Matcher matcher = tuple.matcher(sc.nextLine());
+            if (matcher.find()) {
+                parsed = new Coordinates(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception e) {
             System.out.println("Invalid Input");
         }
         return parsed;
@@ -48,64 +52,72 @@ public class Battleship {
                     System.out.printf("Enter the coordinates for the %s: ", s.getName());
                     Coordinates coords = selectCoord();
                     if (coords != null) {
-                        char SelectedTile = p.getPlayerBoard().get(coords.getY() - 1).get(coords.getX() - 1);
-                        if ((SelectedTile == '~')) {
-                            s.setCoord(coords);
-                            coordIsValid = true;
-                        } else {
-                            String ship = "";
-                            switch (SelectedTile) {
-                                case 'c':
-                                    ship = "Carrier";
-                                    break;
-                                case 'b':
-                                    ship = "Battleship";
-                                    break;
-                                case 'd':
-                                    ship = "Destroyer";
-                                    break;
-                                case 'p':
-                                    ship = "Patrol Boat";
-                                    break;
-                                case 's':
-                                    ship = "Submarine";
-                                    break;
+                        try {
+                            char SelectedTile = p.getPlayerBoard().get(coords.getY() - 1).get(coords.getX() - 1);
+                            if ((SelectedTile == '~')) {
+                                s.setCoord(coords);
+                                coordIsValid = true;
+                            } else {
+                                String ship = "";
+                                switch (SelectedTile) {
+                                    case 'c':
+                                        ship = "Carrier";
+                                        break;
+                                    case 'b':
+                                        ship = "Battleship";
+                                        break;
+                                    case 'd':
+                                        ship = "Destroyer";
+                                        break;
+                                    case 'p':
+                                        ship = "Patrol Boat";
+                                        break;
+                                    case 's':
+                                        ship = "Submarine";
+                                        break;
 
+                                }
+                                System.out.printf("%s is already located there, enter another location.\n", ship);
                             }
-                            System.out.printf("%s is already located there, enter another location.\n", ship);
+                        } catch (Exception e) {
+                            System.out.println("Coordinates out of bounds");
                         }
                     }
                 }
                 System.out.println("Place horizontally or vertically (h or v)");
-                String vert = sc.nextLine();
-                Matcher m = (Pattern.compile("[vh]")).matcher(vert);
-                if (m.find()) {
-                    switch (vert) {
-                        case "v":
-                            if ((s.getY() - 1) + (s.getLength()) < 10) {
-                                placementisValid = true;
-                                s.setVert(true);
-                                for (int i = 0; i < s.getLength(); i++) {
-                                    p.getPlayerBoard().get(s.getY() - 1 + i).set(s.getX() - 1, s.getAcronym());
+                try {
+                    String vert = sc.nextLine();
+                    Matcher m = (Pattern.compile("[vh]")).matcher(vert);
+                    if (m.find()) {
+                        switch (vert) {
+                            case "v":
+                                if ((s.getY() - 1) + (s.getLength()) < 10) {
+                                    placementisValid = true;
+                                    s.setVert(true);
+                                    for (int i = 0; i < s.getLength(); i++) {
+                                        p.getPlayerBoard().get(s.getY() - 1 + i).set(s.getX() - 1, s.getAcronym());
+                                    }
+                                } else {
+                                    System.out.println("Ship placement is out of bounds.");
+                                    sc.close();
                                 }
-                            } else {
-                                System.out.println("Ship placement is out of bounds.");
-                                sc.close();
-                            }
-                            break;
-                        case "h":
-                            if ((s.getX() - 1) + (s.getLength()) < 10) {
-                                placementisValid = true;
-                                s.setVert(false);
-                                for (int i = 0; i < s.getLength(); i++) {
-                                    p.getPlayerBoard().get(s.getY() - 1).set(s.getX() - 1 + i, s.getAcronym());
+                                break;
+                            case "h":
+                                if ((s.getX() - 1) + (s.getLength()) < 10) {
+                                    placementisValid = true;
+                                    s.setVert(false);
+                                    for (int i = 0; i < s.getLength(); i++) {
+                                        p.getPlayerBoard().get(s.getY() - 1).set(s.getX() - 1 + i, s.getAcronym());
+                                    }
+                                } else {
+                                    System.out.println("Ship placement is out of bounds.");
                                 }
-                            } else {
-                                System.out.println("Ship placement is out of bounds.");
-                            }
-                            break;
+                                break;
+                        }
+                    } else {
+                        throw new Exception();
                     }
-                } else {
+                } catch (Exception e ){
                     System.out.println("Invalid input");
                 }
             }
@@ -146,14 +158,31 @@ public class Battleship {
         }
         System.out.println("------------------------");
     }
+    static String getNameInput() {
+        String input = null;
+        boolean valid = false;
+        while (!valid){
+            try {
+                String i = sc.nextLine();
+                if (i.equals("")) {
+                    throw new Exception();
+                }
+                valid = true;
+                input = i;
+            } catch (Exception e) {
+                System.out.println("Input cannot be blank");
+            }
+        }
+        return input;
+    }
 
     static void runGame() {
 
         System.out.println("Battleship Multiplayer");
         System.out.print("Enter player 1 name: ");
-        Player player1 = new Player(sc.nextLine());
+        Player player1 = new Player(getNameInput());
         System.out.print("Enter player 2 name: ");
-        Player player2 = new Player(sc.nextLine());
+        Player player2 = new Player(getNameInput());
         placeShipsFor(player1);
         placeShipsFor(player2);
         boolean winner = false;
