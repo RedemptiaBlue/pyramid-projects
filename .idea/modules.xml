@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/CaesarCipher/CaesarCipher.iml" filepath="$PROJECT_DIR$/CaesarCipher/CaesarCipher.iml" />
       <module fileurl="file://$PROJECT_DIR$/DragonCave/DragonCave.iml" filepath="$PROJECT_DIR$/DragonCave/DragonCave.iml" />
       <module fileurl="file://$PROJECT_DIR$/Hangman/Hangman.iml" filepath="$PROJECT_DIR$/Hangman/Hangman.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Hangman2/Hangman2.iml" filepath="$PROJECT_DIR$/Hangman2/Hangman2.iml" />
       <module fileurl="file://$PROJECT_DIR$/HumansVsGoblins/HumansVsGoblins.iml" filepath="$PROJECT_DIR$/HumansVsGoblins/HumansVsGoblins.iml" />
       <module fileurl="file://$PROJECT_DIR$/NumberGame/NumberGame.iml" filepath="$PROJECT_DIR$/NumberGame/NumberGame.iml" />
       <module fileurl="file://$PROJECT_DIR$/noughtsAndCrosses/noughtsAndCrosses.iml" filepath="$PROJECT_DIR$/noughtsAndCrosses/noughtsAndCrosses.iml" />

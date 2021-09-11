@@ -8,9 +8,8 @@ import java.util.*;
 public class CaesarCipher {
     static Scanner s = new Scanner(System.in);
     static final String encrypt = "encrypt"; static final String decrypt = "decrypt";
-    static Charset ascii = StandardCharsets.US_ASCII;
     static final ArrayList<String> alphabet = new ArrayList<String>() {{
-            addAll(List.of(("abcdefghijklmnopqrstuvwxyz".repeat(2)).split("")));
+            addAll(List.of(("abcdefghijklmnopqrstuvwxyz".repeat(3)).split("")));
     }};
 
 
@@ -72,6 +71,25 @@ public class CaesarCipher {
         return key;
     }
 
+    static String promptFileName(String mode) {
+        String filename = "";
+        boolean valid = false;
+        while (!valid) {
+            if (Objects.equals(mode, encrypt)) {
+                System.out.println("Name the file the message will be stored in:");
+            } else if (Objects.equals(mode, decrypt)) {
+                System.out.println("What's the name of the file the message is in?");
+            }
+            try{
+               filename = s.nextLine();
+               valid = true;
+            } catch (Exception e) {
+                System.out.println("Invalid name");
+            }
+        }
+        return filename;
+    }
+
     static String encryptMessage(String m, int k) {
         StringBuilder encryptedMessage = new StringBuilder();
         for(String c : m.split("")) {
@@ -85,24 +103,28 @@ public class CaesarCipher {
         return encryptedMessage.toString();
     }
 
-    static void printToFile(String message, int k) throws IOException {
+    static void printToFile(String message, int k, String file) throws IOException {
         Message m = new Message(message);
-        FileOutputStream out = new FileOutputStream(String.valueOf(Paths.get("message.txt")));
+        FileOutputStream out = new FileOutputStream(String.valueOf(Paths.get(file + ".bin")));
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
         objectOutputStream.write(k);
         objectOutputStream.writeObject(m);
+        out.close();
+        objectOutputStream.close();
     }
 
-    static void readMessageFromFile() throws IOException, ClassNotFoundException {
-        FileInputStream in = new FileInputStream("message.txt");
+    static ArrayList<String> readMessageFromFile(String file) throws IOException, ClassNotFoundException {
+        FileInputStream in = new FileInputStream(file +".bin");
         ObjectInputStream objectInputStream = new ObjectInputStream(in);
+        int k = objectInputStream.readByte();
         Message encodedMessage = (Message)objectInputStream.readObject();
-        System.out.println(encodedMessage);
+        in.close();
+        objectInputStream.close();
+        return new ArrayList<String>(){{add(String.valueOf(k)); add(encodedMessage.toString());}};
     }
 
     static void decryptMessage(List<String> m) {
-        ArrayList<String> revABC = alphabet ;
-        Collections.reverse(revABC);
+        Collections.reverse(alphabet);
         StringBuilder decryptedMessage = new StringBuilder();
         for(String c : m.get(1).split("")) {
             if (alphabet.contains(c)) {
@@ -111,7 +133,8 @@ public class CaesarCipher {
                 decryptedMessage.append(c);
             }
         }
-        System.out.println("\n" + decryptedMessage + "\n");
+        System.out.println("\nDecrypted message: " + decryptedMessage + "\n");
+        Collections.reverse(alphabet);
     }
 
     public static void main(String[] args) {
@@ -125,15 +148,15 @@ public class CaesarCipher {
                         int key = promptKeyNumber();
                         String encryptedMessage = encryptMessage(newMessage, key);
                         try {
-                            printToFile(encryptedMessage, key);
+                            printToFile(encryptedMessage, key, promptFileName(encrypt));
                         } catch (Exception e ) {
                             System.out.println("Failed to print to File");
                         }
                         break;
                     case decrypt:
                         try{
-                            readMessageFromFile();
-//                            decryptMessage(messageToDecode);
+                            ArrayList<String> messageToDecode = readMessageFromFile(promptFileName(encrypt));
+                            decryptMessage(messageToDecode);
                         } catch (Exception e) {
                             System.out.println(e);
                         }
