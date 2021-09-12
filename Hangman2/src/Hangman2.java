@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -24,6 +25,8 @@ public class Hangman2 {
     private static String guessed;
     private static String[] body;
     private static int misses;
+    private static String name;
+    private static int score;
 
     private static void setup() {
         missedLetters = new ArrayList<>();
@@ -31,7 +34,9 @@ public class Hangman2 {
         guessedList = new ArrayList<>();
         misses = 0;
         body = new String[5];
-
+        score = 100;
+        System.out.println("What is your name?");
+        name = sc.nextLine();
     }
 
     static void printState() throws IOException {
@@ -59,6 +64,7 @@ public class Hangman2 {
                 }
                 else {
                     missedLetters.add(letter);
+                    score = score - 20;
                     misses += 1;
                     body[misses - 1] = bodyParts[misses - 1];
                 }
@@ -69,6 +75,30 @@ public class Hangman2 {
             System.out.println("Invalid input. Try again.");
         }
 
+    }
+
+    static void score() {
+        System.out.printf("Score: %d%n", score);
+        if (Files.notExists(Path.of(String.format("Hangman2/src/%s_score.txt", name)))) {
+            try {
+                Files.write(Path.of(String.format("Hangman2/src/%s_score.txt", name)), List.of(String.valueOf(score)), StandardCharsets.UTF_8);
+            } catch (Exception f) {
+                System.out.println("error writing to file");
+            }
+        } else {
+            try {
+                int highScore = Integer.parseInt(Files.readAllLines(Path.of(String.format("Hangman2/src/%s_score.txt", name))).get(0));
+                if (score > highScore) {
+                    try {
+                        Files.write(Path.of(String.format("Hangman2/src/%s_score.txt", name)), Collections.singleton(String.valueOf(score)), StandardCharsets.UTF_8);
+                    } catch (Exception f) {
+                        System.out.println("error writing to file");
+                    }
+                }
+            } catch (IOException e) {
+                System.out.printf("Error reading save file for %s%n", name);
+            }
+        }
     }
 
 
@@ -102,6 +132,7 @@ public class Hangman2 {
                     }
                     break;
                 case "gameEnd":
+                    score();
                     System.out.println("Play again?");
                     String i = sc.nextLine();
                     if (i.equals("no") || i.equals("n")) {
